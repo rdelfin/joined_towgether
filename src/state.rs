@@ -1,3 +1,4 @@
+use crate::prefabs;
 use amethyst::{
     assets::ProgressCounter,
     core::transform::Transform,
@@ -19,6 +20,8 @@ impl SimpleState for Game {
         let StateData { mut world, .. } = data;
         // Crates new progress counter
         self.progress_counter = Some(Default::default());
+
+        prefabs::load_tower(&mut world, self.progress_counter.as_mut().unwrap());
 
         // Creates a new camera
         initialise_camera(&mut world);

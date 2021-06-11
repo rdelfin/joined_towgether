@@ -1,0 +1,65 @@
+#![enable(implicit_some)]
+Prefab(
+    entities: [
+        PrefabEntity(
+            data: TowerPrefab(
+                // SpriteScenePrefab
+                sprite_scene: (
+                    // SpriteSheetPrefab with index 0
+                    sheet: Sheet(
+                        // TexturePrefab
+                        texture: File("sprites/tower.png", (
+                            "IMAGE", (
+                                sampler_info: (
+                                    min_filter: Nearest,
+                                    mag_filter: Nearest,
+                                    mip_filter: Nearest,
+                                    wrap_mode: (Tile, Tile, Tile),
+                                    lod_bias: (0),
+                                    lod_range: (
+                                        start: ( 0 ),
+                                        end: ( 8000 ),
+                                    ),
+                                    comparison: None,
+                                    border: (0),
+                                    normalized: true,
+                                    anisotropic: Off,
+                                ),
+                            ),
+                        )),
+                        sprites: [
+                            // Jocat sprites (idle)
+                            Grid((
+                                texture_width: 128,
+                                texture_height: 32,
+                                columns: 4,
+                                rows: 1,
+                                cell_size: (32, 32),
+                            )),
+                        ],
+                        name: "tower",
+                    ),
+                    // SpriteRenderPrefab
+                    render: (
+                        sheet: "tower",
+                        sprite_number: 0,
+                    ),
+                    // Transform
+                    transform: (
+                        translation: (0.0, 0.0, 0.1),
+                    ),
+                ),
+                // AnimationSetPrefab
+                animation_set: (
+                    animations: [
+                        (TowerLeft, (samplers: [(0, SpriteIndex, (input: [0.00, 1.00], output: [0, 0], function: Step))])),
+                        (TowerRight, (samplers: [(0, SpriteIndex, (input: [0.00, 1.00], output: [1, 1], function: Step))])),
+                        (TowerUp, (samplers: [(0, SpriteIndex, (input: [0.00, 1.00], output: [2, 2], function: Step))])),
+                        (TowerDown, (samplers: [(0, SpriteIndex, (input: [0.00, 1.00], output: [3, 3], function: Step))])),
+                    ],
+                ),
+            ),
+        ),
+    ],
+)
+

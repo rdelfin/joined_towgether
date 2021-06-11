@@ -1,7 +1,10 @@
 use amethyst::{
+    animation::AnimationBundle,
+    assets::PrefabLoaderSystemDesc,
     core::transform::TransformBundle,
     renderer::{
         plugins::{RenderFlat2D, RenderToWindow},
+        sprite::SpriteRender,
         types::DefaultBackend,
         RenderingBundle,
     },
@@ -9,6 +12,8 @@ use amethyst::{
     Application, GameDataBuilder,
 };
 
+mod animation;
+mod prefabs;
 mod state;
 
 fn main() -> amethyst::Result<()> {
@@ -19,7 +24,21 @@ fn main() -> amethyst::Result<()> {
     let display_config_path = app_root.join("config").join("display.ron");
 
     let game_data = GameDataBuilder::default()
-        .with_bundle(TransformBundle::new())?
+        .with_system_desc(
+            PrefabLoaderSystemDesc::<prefabs::TowerPrefab>::default(),
+            "tower_loader",
+            &[],
+        )
+        .with_bundle(
+            AnimationBundle::<animation::AnimationId, SpriteRender>::new(
+                "sprite_animation_control",
+                "sprite_sampler_interpolation",
+            ),
+        )?
+        .with_bundle(
+            TransformBundle::new()
+                .with_dep(&["sprite_animation_control", "sprite_sampler_interpolation"]),
+        )?
         .with_bundle(
             RenderingBundle::<DefaultBackend>::new()
                 .with_plugin(
