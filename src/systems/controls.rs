@@ -1,16 +1,18 @@
 use crate::{
+    animation::AnimationId,
     components::Tower,
     input::{ActionBinding, GameBindingTypes},
     prefabs::BulletPrefab,
     resources::{BulletPrefabSet, BulletType},
 };
 use amethyst::{
+    animation::{get_animation_set, AnimationControlSet},
     assets::{Handle, Prefab},
     core::{geometry::Plane, Transform},
     derive::SystemDesc,
     ecs::{prelude::*, Entities, Read, System, WriteStorage},
     input::InputHandler,
-    renderer::{ActiveCamera, Camera},
+    renderer::{sprite::SpriteRender, ActiveCamera, Camera},
     window::ScreenDimensions,
 };
 use log::info;
@@ -27,6 +29,7 @@ impl<'s> System<'s> for ShooterControlSystem {
         Read<'s, InputHandler<GameBindingTypes>>,
         ReadStorage<'s, Transform>,
         WriteStorage<'s, Tower>,
+        WriteStorage<'s, AnimationControlSet<AnimationId, SpriteRender>>,
         WriteStorage<'s, Handle<Prefab<BulletPrefab>>>,
         Read<'s, BulletPrefabSet>,
         ReadStorage<'s, Camera>,
@@ -41,6 +44,7 @@ impl<'s> System<'s> for ShooterControlSystem {
             input,
             transforms,
             mut towers,
+            mut control_sets,
             mut bullet_prefabs,
             bullet_prefab_set,
             cameras,
@@ -53,11 +57,19 @@ impl<'s> System<'s> for ShooterControlSystem {
             &input,
             &transforms,
             &mut towers,
+            &mut control_sets,
             &cameras,
             &active_camera,
             &screen_dimensions,
         );
-        self.fire_routine(&entities, &input, &mut bullet_prefabs, &bullet_prefab_set);
+        self.fire_routine(
+            &entities,
+            &input,
+            &mut towers,
+            &mut control_sets,
+            &mut bullet_prefabs,
+            &bullet_prefab_set,
+        );
     }
 }
 
@@ -68,6 +80,7 @@ impl ShooterControlSystem {
         input: &Read<'s, InputHandler<GameBindingTypes>>,
         transforms: &ReadStorage<'s, Transform>,
         towers: &mut WriteStorage<'s, Tower>,
+        control_sets: &mut WriteStorage<'s, AnimationControlSet<AnimationId, SpriteRender>>,
         cameras: &ReadStorage<'s, Camera>,
         active_camera: &Read<'s, ActiveCamera>,
         screen_dimensions: &ReadExpect<'s, ScreenDimensions>,
@@ -84,11 +97,21 @@ impl ShooterControlSystem {
             None => return,
         };
 
-        for (tower, transform) in (towers, transforms).join() {
+        for (entity, tower, transform) in (entities, towers, transforms).join() {
             let tower_position = Point2::new(transform.translation().x, transform.translation().y);
             let dir = (mouse - tower_position).normalize();
             tower.dir = dir;
-            info!("Pointing to {:?}", dir);
+
+            let control_set = get_animation_set(control_sets, entity).unwrap();
+            let direction = self.get_tower_direction(dir);
+            control_set.pause(AnimationId::TowerUp);
+            control_set.pause(AnimationId::TowerDown);
+            control_set.pause(AnimationId::TowerLeft);
+            control_set.pause(AnimationId::TowerRight);
+            control_set.set_input(direction, 0.0);
+            control_set.start(direction);
+
+            info!("Pointing to {:?} ({:?})", dir, direction);
         }
     }
 
@@ -96,6 +119,8 @@ impl ShooterControlSystem {
         &mut self,
         entities: &Entities<'s>,
         input: &Read<'s, InputHandler<GameBindingTypes>>,
+        towers: &mut WriteStorage<'s, Tower>,
+        control_sets: &mut WriteStorage<'s, AnimationControlSet<AnimationId, SpriteRender>>,
         bullet_prefabs: &mut WriteStorage<'s, Handle<Prefab<BulletPrefab>>>,
         bullet_prefab_set: &Read<'s, BulletPrefabSet>,
     ) {
@@ -142,6 +167,23 @@ impl ShooterControlSystem {
                 Some(Point2::new(point_intersection.x, point_intersection.y))
             }
             None => None,
+        }
+    }
+
+    fn get_tower_direction(&self, dir: Vector2<f32>) -> AnimationId {
+        let angle = dir.y.atan2(dir.x);
+        const PI: f32 = std::f32::consts::PI;
+
+        println!("Angle: {}", angle);
+
+        if angle >= PI / 4. && angle < 3. * PI / 4. {
+            AnimationId::TowerUp
+        } else if angle >= 3. * PI / 4. || angle < -3. * PI / 4. {
+            AnimationId::TowerLeft
+        } else if angle >= -3. * PI / 4. && angle < -PI / 4. {
+            AnimationId::TowerDown
+        } else {
+            AnimationId::TowerRight
         }
     }
 }

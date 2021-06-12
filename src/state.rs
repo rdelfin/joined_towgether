@@ -1,13 +1,18 @@
-use crate::{prefabs, resources};
+use crate::{animation::AnimationId, components::Tower, prefabs, resources};
 use amethyst::{
+    animation::{
+        get_animation_set, AnimationCommand, AnimationControlSet, AnimationSet, EndControl,
+    },
     assets::ProgressCounter,
     core::transform::Transform,
+    ecs::{Entities, Join, ReadStorage, WriteStorage},
     input::{is_close_requested, is_key_down, VirtualKeyCode},
     prelude::{Builder, World, WorldExt},
-    renderer::camera::Camera,
+    renderer::{camera::Camera, sprite::SpriteRender},
     window::ScreenDimensions,
     GameData, SimpleState, SimpleTrans, StateData, StateEvent, Trans,
 };
+use log::info;
 
 #[derive(Default)]
 pub struct Game {
@@ -41,6 +46,94 @@ impl SimpleState for Game {
             }
         }
         Trans::None
+    }
+
+    fn update(&mut self, data: &mut StateData<'_, GameData<'_, '_>>) -> SimpleTrans {
+        // Checks if we are still loading data
+
+        if let Some(ref progress_counter) = self.progress_counter {
+            // Checks progress
+            if progress_counter.is_complete() {
+                info!("LOADED");
+                let StateData { world, .. } = data;
+
+                self.initialise_animations(world);
+
+                // All data loaded
+                self.progress_counter = None;
+            } else {
+                let errors = progress_counter.errors();
+                if !errors.is_empty() {
+                    println!("ERRORS: {:?}", errors);
+                }
+
+                let num_finished = progress_counter.num_finished();
+                let print = match self.items_done_last {
+                    Some(l) => num_finished != l,
+                    None => true,
+                };
+                if print {
+                    self.items_done_last = Some(num_finished);
+                    let completion_pct =
+                        100. * num_finished as f64 / progress_counter.num_assets() as f64;
+                    info!(
+                        "{:.2}% DONE ({} failed)",
+                        completion_pct,
+                        progress_counter.num_failed()
+                    );
+                }
+            }
+        }
+
+        Trans::None
+    }
+}
+
+impl Game {
+    fn initialise_animations(&mut self, world: &mut World) {
+        world.exec(
+            |(entities, animation_sets, towers, mut control_sets): (
+                Entities,
+                ReadStorage<AnimationSet<AnimationId, SpriteRender>>,
+                ReadStorage<Tower>,
+                WriteStorage<AnimationControlSet<AnimationId, SpriteRender>>,
+            )| {
+                // For each entity that has AnimationSet
+                for (entity, animation_set, _) in (&entities, &animation_sets, &towers).join() {
+                    // Creates a new AnimationControlSet for the entity
+                    let control_set = get_animation_set(&mut control_sets, entity).unwrap();
+
+                    control_set.add_animation(
+                        AnimationId::TowerLeft,
+                        &animation_set.get(&AnimationId::TowerLeft).unwrap(),
+                        EndControl::Stay,
+                        1.0,
+                        AnimationCommand::Start,
+                    );
+                    control_set.add_animation(
+                        AnimationId::TowerUp,
+                        &animation_set.get(&AnimationId::TowerUp).unwrap(),
+                        EndControl::Stay,
+                        1.0,
+                        AnimationCommand::Init,
+                    );
+                    control_set.add_animation(
+                        AnimationId::TowerDown,
+                        &animation_set.get(&AnimationId::TowerDown).unwrap(),
+                        EndControl::Stay,
+                        1.0,
+                        AnimationCommand::Init,
+                    );
+                    control_set.add_animation(
+                        AnimationId::TowerRight,
+                        &animation_set.get(&AnimationId::TowerRight).unwrap(),
+                        EndControl::Stay,
+                        1.0,
+                        AnimationCommand::Init,
+                    );
+                }
+            },
+        );
     }
 }
 
