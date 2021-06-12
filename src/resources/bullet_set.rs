@@ -72,7 +72,7 @@ impl BulletPrefabSet {
             .with(bullet_prefab, bullet_prefabs)
             .with(
                 Transform::new(
-                    Translation3::new(position.x, position.y, 0.2),
+                    Translation3::new(position.x, position.y + 10., 0.2),
                     UnitQuaternion::from_axis_angle(
                         &Unit::new_normalize(Vector3::new(0.0, 0.0, 1.0)),
                         dir.y.atan2(dir.x),
