@@ -1,13 +1,10 @@
-use crate::animation::AnimationId;
 use amethyst::{
-    animation::AnimationSetPrefab,
     assets::{Handle, Prefab, PrefabData, PrefabLoader, ProgressCounter, RonFormat},
     derive::PrefabData,
     ecs::prelude::Entity,
     error::Error,
     prelude::World,
     renderer::sprite::prefab::SpriteScenePrefab,
-    renderer::sprite::SpriteRender,
 };
 use serde::Deserialize;
 
