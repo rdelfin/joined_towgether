@@ -2,6 +2,7 @@ use amethyst::{
     animation::AnimationBundle,
     assets::PrefabLoaderSystemDesc,
     core::transform::TransformBundle,
+    input::InputBundle,
     renderer::{
         plugins::{RenderFlat2D, RenderToWindow},
         sprite::SpriteRender,
@@ -13,6 +14,7 @@ use amethyst::{
 };
 
 mod animation;
+mod input;
 mod prefabs;
 mod state;
 
@@ -22,6 +24,7 @@ fn main() -> amethyst::Result<()> {
     let app_root = application_root_dir()?;
     let assets_dir = app_root.join("assets");
     let display_config_path = app_root.join("config").join("display.ron");
+    let bindings_path = app_root.join("config").join("bindings.ron");
 
     let game_data = GameDataBuilder::default()
         .with_system_desc(
@@ -38,6 +41,9 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(
             TransformBundle::new()
                 .with_dep(&["sprite_animation_control", "sprite_sampler_interpolation"]),
+        )?
+        .with_bundle(
+            InputBundle::<input::GameBindingTypes>::new().with_bindings_from_file(bindings_path)?,
         )?
         .with_bundle(
             RenderingBundle::<DefaultBackend>::new()

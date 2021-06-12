@@ -1,0 +1,6 @@
+(
+    axes: {},
+    actions: {
+        Fire: [[Key(Space)], [Mouse(Left)]],
+    },
+)
