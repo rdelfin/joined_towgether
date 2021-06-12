@@ -4,6 +4,6 @@ mod physics;
 
 pub use self::{
     bullet::BulletSpeedSystem,
-    controls::{ShooterControlSystem, TowerDirectionSystem},
+    controls::{PlayerControlSystem, ShooterControlSystem, TowerDirectionSystem},
     physics::PhysicsSystem,
 };

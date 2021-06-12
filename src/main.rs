@@ -76,6 +76,7 @@ fn main() -> amethyst::Result<()> {
                 )
                 .with_plugin(RenderFlat2D::default()),
         )?
+        .with(systems::PlayerControlSystem, "player_control_system", &[])
         .with(
             systems::ShooterControlSystem::default(),
             "shooter_control_system",
@@ -94,7 +95,7 @@ fn main() -> amethyst::Result<()> {
         .with(
             systems::PhysicsSystem,
             "physics_system",
-            &["shooter_control_system"],
+            &["shooter_control_system", "player_control_system"],
         );
 
     let mut game = Application::new(assets_dir, state::Loading::default(), game_data)?;

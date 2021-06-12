@@ -1,6 +1,6 @@
 use crate::{
-    components::{Tower, TowerDirection, Velocity},
-    input::{ActionBinding, GameBindingTypes},
+    components::{ControlledCharacter, Tower, TowerDirection, Velocity},
+    input::{ActionBinding, AxisBinding, GameBindingTypes},
     prefabs::BulletPrefab,
     resources::{BulletPrefabSet, BulletType},
 };
@@ -207,6 +207,30 @@ impl<'s> System<'s> for TowerDirectionSystem {
                 TowerDirection::E => 1,
                 TowerDirection::W => 0,
             }
+        }
+    }
+}
+
+#[derive(Default, SystemDesc)]
+pub struct PlayerControlSystem;
+
+impl<'s> System<'s> for PlayerControlSystem {
+    type SystemData = (
+        Read<'s, InputHandler<GameBindingTypes>>,
+        ReadStorage<'s, ControlledCharacter>,
+        WriteStorage<'s, Velocity>,
+    );
+
+    fn run(&mut self, (input, controlled_characters, mut velocities): Self::SystemData) {
+        for (controlled_character, velocity) in (&controlled_characters, &mut velocities).join() {
+            let forwards = input.axis_value(&AxisBinding::Forwards).unwrap_or(0.0);
+            let sideways = input.axis_value(&AxisBinding::Sideways).unwrap_or(0.0);
+            let mut direction = Vector2::new(sideways, forwards);
+            if direction.norm() != 0.0 {
+                direction = direction.normalize();
+            }
+
+            velocity.v = direction * controlled_character.speed;
         }
     }
 }
