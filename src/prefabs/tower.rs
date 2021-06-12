@@ -4,7 +4,7 @@ use amethyst::{
     derive::PrefabData,
     ecs::prelude::Entity,
     error::Error,
-    prelude::{Builder, World, WorldExt},
+    prelude::World,
     renderer::sprite::prefab::SpriteScenePrefab,
 };
 use serde::Deserialize;
