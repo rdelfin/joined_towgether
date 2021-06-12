@@ -1,6 +1,6 @@
 use crate::components::Tower;
 use amethyst::{
-    assets::{PrefabData, PrefabLoader, ProgressCounter, RonFormat},
+    assets::{Handle, Prefab, PrefabData, PrefabLoader, ProgressCounter, RonFormat},
     derive::PrefabData,
     ecs::prelude::Entity,
     error::Error,
@@ -15,9 +15,11 @@ pub struct TowerPrefab {
     tower: Tower,
 }
 
-pub fn load_tower(world: &mut World, progress_counter: &mut ProgressCounter) {
-    let prefab = world.exec(|loader: PrefabLoader<'_, TowerPrefab>| {
+pub fn load_tower(
+    world: &mut World,
+    progress_counter: &mut ProgressCounter,
+) -> Handle<Prefab<TowerPrefab>> {
+    world.exec(|loader: PrefabLoader<'_, TowerPrefab>| {
         loader.load("prefabs/tower.ron", RonFormat, progress_counter)
-    });
-    world.create_entity().with(prefab).build();
+    })
 }

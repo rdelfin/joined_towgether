@@ -40,6 +40,11 @@ fn main() -> amethyst::Result<()> {
             "bullet_loader",
             &[],
         )
+        .with_system_desc(
+            PrefabLoaderSystemDesc::<prefabs::SplashAnimationPrefab>::default(),
+            "splash_loader",
+            &[],
+        )
         .with_bundle(
             AnimationBundle::<animation::AnimationId, SpriteRender>::new(
                 "sprite_animation_control",
@@ -82,7 +87,7 @@ fn main() -> amethyst::Result<()> {
             &["shooter_control_system"],
         );
 
-    let mut game = Application::new(assets_dir, state::Game::default(), game_data)?;
+    let mut game = Application::new(assets_dir, state::Loading::default(), game_data)?;
     game.run();
 
     Ok(())
