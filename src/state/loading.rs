@@ -22,6 +22,7 @@ pub struct Loading {
     items_done_last: Option<usize>,
     tower_prefab: Option<Handle<Prefab<prefabs::TowerPrefab>>>,
     background_prefab: Option<Handle<Prefab<prefabs::BackgroundPrefab>>>,
+    player_prefab: Option<Handle<Prefab<prefabs::PlayerPrefab>>>,
     counter_end: Option<Instant>,
     animation_entity: Option<Entity>,
 }
@@ -80,6 +81,10 @@ impl SimpleState for Loading {
                     world,
                     self.main_progress_counter.as_mut().unwrap(),
                 ));
+                self.player_prefab = Some(prefabs::load_player(
+                    world,
+                    self.main_progress_counter.as_mut().unwrap(),
+                ));
             }
         } else if let Some(ref main_progress_counter) = self.main_progress_counter {
             // Checks progress
@@ -118,6 +123,7 @@ impl SimpleState for Loading {
                     return Trans::Replace(Box::new(Game {
                         tower_prefab: self.tower_prefab.as_ref().unwrap().clone(),
                         background_prefab: self.background_prefab.as_ref().unwrap().clone(),
+                        player_prefab: self.player_prefab.as_ref().unwrap().clone(),
                     }));
                 }
             }

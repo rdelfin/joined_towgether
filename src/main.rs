@@ -50,6 +50,11 @@ fn main() -> amethyst::Result<()> {
             "background_loader",
             &[],
         )
+        .with_system_desc(
+            PrefabLoaderSystemDesc::<prefabs::PlayerPrefab>::default(),
+            "player_loader",
+            &[],
+        )
         .with_bundle(
             AnimationBundle::<animation::AnimationId, SpriteRender>::new(
                 "sprite_animation_control",

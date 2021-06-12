@@ -9,6 +9,7 @@ use amethyst::{
 pub struct Game {
     pub tower_prefab: Handle<Prefab<prefabs::TowerPrefab>>,
     pub background_prefab: Handle<Prefab<prefabs::BackgroundPrefab>>,
+    pub player_prefab: Handle<Prefab<prefabs::PlayerPrefab>>,
 }
 
 impl SimpleState for Game {
@@ -18,7 +19,7 @@ impl SimpleState for Game {
         // Add prefabs based on what was loaded in the loading state
         world
             .create_entity()
-            .with(self.tower_prefab.clone())
+            .with(self.player_prefab.clone())
             .build();
         world
             .create_entity()
