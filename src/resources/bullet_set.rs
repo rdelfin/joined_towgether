@@ -54,13 +54,13 @@ impl BulletPrefabSet {
     pub fn add_bullet<'s>(
         &self,
         bullet_type: BulletType,
-        entities: Entities<'s>,
-        mut bullet_prefabs: WriteStorage<'s, Handle<Prefab<BulletPrefab>>>,
+        entities: &Entities<'s>,
+        bullet_prefabs: &mut WriteStorage<'s, Handle<Prefab<BulletPrefab>>>,
     ) -> anyhow::Result<()> {
         let throwable_prefab = self.get_handle(bullet_type)?;
         entities
             .build_entity()
-            .with(throwable_prefab, &mut bullet_prefabs)
+            .with(throwable_prefab, bullet_prefabs)
             .build();
         Ok(())
     }
