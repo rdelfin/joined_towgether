@@ -1,4 +1,4 @@
-use crate::animation::AnimationId;
+use crate::{animation::AnimationId, components::Tower};
 use amethyst::{
     animation::AnimationSetPrefab,
     assets::{PrefabData, PrefabLoader, ProgressCounter, RonFormat},
@@ -15,6 +15,7 @@ use serde::Deserialize;
 pub struct TowerPrefab {
     sprite_scene: SpriteScenePrefab,
     animation_set: AnimationSetPrefab<AnimationId, SpriteRender>,
+    tower: Tower,
 }
 
 pub fn load_tower(world: &mut World, progress_counter: &mut ProgressCounter) {

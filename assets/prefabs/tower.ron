@@ -58,6 +58,10 @@ Prefab(
                         (TowerDown, (samplers: [(0, SpriteIndex, (input: [0.00, 1.00], output: [3, 3], function: Step))])),
                     ],
                 ),
+                // Tower
+                tower: (
+                    dir: [-1.0, 0.0],
+                )
             ),
         ),
     ],
