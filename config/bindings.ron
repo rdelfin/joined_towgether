@@ -1,6 +1,11 @@
 (
-    axes: {},
+    axes: {
+        Forwards: Emulated(pos: Key(W), neg: Key(S)),
+        Sideways: Emulated(pos: Key(A), neg: Key(D)),
+    },
     actions: {
-        Fire: [[Key(Space)], [Mouse(Left)]],
+        Fire: [[Key(Space)]],
+        Activate: [[Key(Return)]],
+        Place: [[Mouse(Left)]],
     },
 )

@@ -4,11 +4,16 @@ use amethyst::input::BindingTypes;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Hash, PartialEq, Eq, Serialize, Deserialize)]
-pub enum AxisBinding {}
+pub enum AxisBinding {
+    Forwards,
+    Sideways,
+}
 
 #[derive(Clone, Debug, Hash, PartialEq, Eq, Serialize, Deserialize)]
 pub enum ActionBinding {
     Fire,
+    Activate,
+    Place,
 }
 
 impl Display for AxisBinding {
