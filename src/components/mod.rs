@@ -1,3 +1,3 @@
 mod tower;
 
-pub use self::tower::Tower;
+pub use self::tower::{Tower, TowerDirection};

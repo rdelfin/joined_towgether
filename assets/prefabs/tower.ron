@@ -49,18 +49,10 @@ Prefab(
                         translation: (0.0, 0.0, 0.1),
                     ),
                 ),
-                // AnimationSetPrefab
-                animation_set: (
-                    animations: [
-                        (TowerLeft, (samplers: [(0, SpriteIndex, (input: [0.00, 1.00], output: [0, 0], function: Step))])),
-                        (TowerRight, (samplers: [(0, SpriteIndex, (input: [0.00, 1.00], output: [1, 1], function: Step))])),
-                        (TowerUp, (samplers: [(0, SpriteIndex, (input: [0.00, 1.00], output: [2, 2], function: Step))])),
-                        (TowerDown, (samplers: [(0, SpriteIndex, (input: [0.00, 1.00], output: [3, 3], function: Step))])),
-                    ],
-                ),
                 // Tower
                 tower: (
                     dir: [-1.0, 0.0],
+                    sprite_dir: E,
                 )
             ),
         ),

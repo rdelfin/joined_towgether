@@ -14,7 +14,6 @@ use serde::Deserialize;
 #[derive(Debug, Clone, Deserialize, PrefabData)]
 pub struct TowerPrefab {
     sprite_scene: SpriteScenePrefab,
-    animation_set: AnimationSetPrefab<AnimationId, SpriteRender>,
     tower: Tower,
 }
 

@@ -1,3 +1,3 @@
 mod controls;
 
-pub use self::controls::ShooterControlSystem;
+pub use self::controls::{ShooterControlSystem, TowerDirectionSystem};
