@@ -45,6 +45,11 @@ fn main() -> amethyst::Result<()> {
             "splash_loader",
             &[],
         )
+        .with_system_desc(
+            PrefabLoaderSystemDesc::<prefabs::BackgroundPrefab>::default(),
+            "background_loader",
+            &[],
+        )
         .with_bundle(
             AnimationBundle::<animation::AnimationId, SpriteRender>::new(
                 "sprite_animation_control",

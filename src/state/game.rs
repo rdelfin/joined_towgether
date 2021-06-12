@@ -8,16 +8,21 @@ use amethyst::{
 
 pub struct Game {
     pub tower_prefab: Handle<Prefab<prefabs::TowerPrefab>>,
+    pub background_prefab: Handle<Prefab<prefabs::BackgroundPrefab>>,
 }
 
 impl SimpleState for Game {
     fn on_start(&mut self, data: StateData<'_, GameData<'_, '_>>) {
         let StateData { world, .. } = data;
 
-        // Add prefabs based on what was loaded in in loading
+        // Add prefabs based on what was loaded in the loading state
         world
             .create_entity()
             .with(self.tower_prefab.clone())
+            .build();
+        world
+            .create_entity()
+            .with(self.background_prefab.clone())
             .build();
     }
 
