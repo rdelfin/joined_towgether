@@ -1,4 +1,4 @@
-use crate::prefabs;
+use crate::{prefabs, resources};
 use amethyst::{
     assets::ProgressCounter,
     core::transform::Transform,
@@ -21,6 +21,9 @@ impl SimpleState for Game {
         // Crates new progress counter
         self.progress_counter = Some(Default::default());
 
+        let bullet_prefab_set =
+            resources::BulletPrefabSet::new(&mut world, self.progress_counter.as_mut().unwrap());
+        world.insert(bullet_prefab_set);
         prefabs::load_tower(&mut world, self.progress_counter.as_mut().unwrap());
 
         // Creates a new camera
