@@ -1,9 +1,14 @@
-use crate::prefabs::{load_bullet, BulletPrefab};
+use crate::{
+    components::{Bullet, Velocity},
+    prefabs::{load_bullet, BulletPrefab},
+};
 use amethyst::{
     assets::{Handle, Prefab, ProgressCounter},
-    ecs::{Entities, WriteStorage},
+    core::Transform,
+    ecs::{Entities, ReadStorage, WriteStorage},
     prelude::World,
 };
+use nalgebra::{Translation3, Unit, UnitQuaternion, Vector2, Vector3};
 use std::collections::HashMap;
 
 #[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
@@ -54,14 +59,31 @@ impl BulletPrefabSet {
     pub fn add_bullet<'s>(
         &self,
         bullet_type: BulletType,
+        dir: Vector2<f32>,
+        position: Vector2<f32>,
         entities: &Entities<'s>,
         bullet_prefabs: &mut WriteStorage<'s, Handle<Prefab<BulletPrefab>>>,
+        transforms: &mut WriteStorage<'s, Transform>,
+        velocities: &mut WriteStorage<'s, Velocity>,
     ) -> anyhow::Result<()> {
-        let throwable_prefab = self.get_handle(bullet_type)?;
+        let bullet_prefab = self.get_handle(bullet_type)?;
         entities
             .build_entity()
-            .with(throwable_prefab, bullet_prefabs)
+            .with(bullet_prefab, bullet_prefabs)
+            .with(
+                Transform::new(
+                    Translation3::new(position.x, position.y, 0.2),
+                    UnitQuaternion::from_axis_angle(
+                        &Unit::new_normalize(Vector3::new(0.0, 0.0, 1.0)),
+                        dir.y.atan2(dir.x),
+                    ),
+                    Vector3::new(1.0, 1.0, 1.0),
+                ),
+                transforms,
+            )
+            .with(Velocity { v: dir }, velocities)
             .build();
+
         Ok(())
     }
 }

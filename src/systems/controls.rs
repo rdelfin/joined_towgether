@@ -1,5 +1,5 @@
 use crate::{
-    components::{Tower, TowerDirection},
+    components::{Bullet, Tower, TowerDirection, Velocity},
     input::{ActionBinding, GameBindingTypes},
     prefabs::BulletPrefab,
     resources::{BulletPrefabSet, BulletType},
@@ -25,8 +25,10 @@ impl<'s> System<'s> for ShooterControlSystem {
     type SystemData = (
         Entities<'s>,
         Read<'s, InputHandler<GameBindingTypes>>,
-        ReadStorage<'s, Transform>,
+        WriteStorage<'s, Transform>,
         WriteStorage<'s, Tower>,
+        WriteStorage<'s, Velocity>,
+        ReadStorage<'s, Bullet>,
         WriteStorage<'s, Handle<Prefab<BulletPrefab>>>,
         Read<'s, BulletPrefabSet>,
         ReadStorage<'s, Camera>,
@@ -39,8 +41,10 @@ impl<'s> System<'s> for ShooterControlSystem {
         (
             entities,
             input,
-            transforms,
+            mut transforms,
             mut towers,
+            mut velocities,
+            bullets,
             mut bullet_prefabs,
             bullet_prefab_set,
             cameras,
@@ -57,7 +61,16 @@ impl<'s> System<'s> for ShooterControlSystem {
             &active_camera,
             &screen_dimensions,
         );
-        self.fire_routine(&entities, &input, &mut bullet_prefabs, &bullet_prefab_set);
+        self.fire_routine(
+            &entities,
+            &input,
+            &mut transforms,
+            &mut velocities,
+            &towers,
+            &bullets,
+            &mut bullet_prefabs,
+            &bullet_prefab_set,
+        );
     }
 }
 
@@ -66,7 +79,7 @@ impl ShooterControlSystem {
         &mut self,
         entities: &Entities<'s>,
         input: &Read<'s, InputHandler<GameBindingTypes>>,
-        transforms: &ReadStorage<'s, Transform>,
+        transforms: &WriteStorage<'s, Transform>,
         towers: &mut WriteStorage<'s, Tower>,
         cameras: &ReadStorage<'s, Camera>,
         active_camera: &Read<'s, ActiveCamera>,
@@ -96,15 +109,38 @@ impl ShooterControlSystem {
         &mut self,
         entities: &Entities<'s>,
         input: &Read<'s, InputHandler<GameBindingTypes>>,
+        transforms: &mut WriteStorage<'s, Transform>,
+        velocities: &mut WriteStorage<'s, Velocity>,
+        towers: &WriteStorage<'s, Tower>,
+        bullets: &ReadStorage<'s, Bullet>,
         bullet_prefabs: &mut WriteStorage<'s, Handle<Prefab<BulletPrefab>>>,
         bullet_prefab_set: &Read<'s, BulletPrefabSet>,
     ) {
         let fire_is_pressed = input.action_is_down(&ActionBinding::Fire).unwrap_or(false);
 
         if !fire_is_pressed && self.fire_was_pressed {
-            bullet_prefab_set
-                .add_bullet(BulletType::Standard, entities, bullet_prefabs)
-                .expect("Failed to add bullet");
+            let mut tower_data: Vec<(Vector2<f32>, Vector2<f32>)> = vec![];
+            for (transform, tower) in (&*transforms, towers).join() {
+                let translation = transform.translation().clone();
+                tower_data.push((
+                    tower.dir.clone(),
+                    Vector2::new(translation.x, translation.y),
+                ));
+            }
+
+            for (direction, position) in tower_data {
+                bullet_prefab_set
+                    .add_bullet(
+                        BulletType::Standard,
+                        direction,
+                        position,
+                        entities,
+                        bullet_prefabs,
+                        transforms,
+                        velocities,
+                    )
+                    .expect("Failed to add bullet");
+            }
             info!("PEW");
         }
 
@@ -115,7 +151,7 @@ impl ShooterControlSystem {
         &self,
         entities: &Entities<'s>,
         input: &Read<'s, InputHandler<GameBindingTypes>>,
-        transforms: &ReadStorage<'s, Transform>,
+        transforms: &WriteStorage<'s, Transform>,
         cameras: &ReadStorage<'s, Camera>,
         active_camera: &Read<'s, ActiveCamera>,
         screen_dimensions: &ReadExpect<'s, ScreenDimensions>,

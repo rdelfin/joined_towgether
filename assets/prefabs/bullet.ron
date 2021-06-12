@@ -43,14 +43,11 @@ Prefab(
                         sheet: "bullet",
                         sprite_number: 0,
                     ),
-                    // Transform
-                    transform: (
-                        translation: (0.0, 0.0, 0.2),
-                    ),
+                    // Transform is populated on generation, so it ommited
                 ),
-                // Velocity
-                velocity: (
-                    v: [1.0, 0.0],
+                // Bullet
+                bullet: (
+                    speed: 1000.0,
                 ),
             ),
         ),
