@@ -1,7 +1,7 @@
 (
     axes: {
         Forwards: Emulated(pos: Key(W), neg: Key(S)),
-        Sideways: Emulated(pos: Key(A), neg: Key(D)),
+        Sideways: Emulated(pos: Key(D), neg: Key(A)),
     },
     actions: {
         Fire: [[Key(Space)]],
