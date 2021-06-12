@@ -16,6 +16,7 @@ use amethyst::{
 mod animation;
 mod input;
 mod prefabs;
+mod resources;
 mod state;
 
 fn main() -> amethyst::Result<()> {
