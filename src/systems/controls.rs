@@ -1,5 +1,5 @@
 use crate::{
-    components::{Bullet, Tower, TowerDirection, Velocity},
+    components::{Tower, TowerDirection, Velocity},
     input::{ActionBinding, GameBindingTypes},
     prefabs::BulletPrefab,
     resources::{BulletPrefabSet, BulletType},
@@ -28,7 +28,6 @@ impl<'s> System<'s> for ShooterControlSystem {
         WriteStorage<'s, Transform>,
         WriteStorage<'s, Tower>,
         WriteStorage<'s, Velocity>,
-        ReadStorage<'s, Bullet>,
         WriteStorage<'s, Handle<Prefab<BulletPrefab>>>,
         Read<'s, BulletPrefabSet>,
         ReadStorage<'s, Camera>,
@@ -44,7 +43,6 @@ impl<'s> System<'s> for ShooterControlSystem {
             mut transforms,
             mut towers,
             mut velocities,
-            bullets,
             mut bullet_prefabs,
             bullet_prefab_set,
             cameras,
@@ -67,7 +65,6 @@ impl<'s> System<'s> for ShooterControlSystem {
             &mut transforms,
             &mut velocities,
             &towers,
-            &bullets,
             &mut bullet_prefabs,
             &bullet_prefab_set,
         );
@@ -112,7 +109,6 @@ impl ShooterControlSystem {
         transforms: &mut WriteStorage<'s, Transform>,
         velocities: &mut WriteStorage<'s, Velocity>,
         towers: &WriteStorage<'s, Tower>,
-        bullets: &ReadStorage<'s, Bullet>,
         bullet_prefabs: &mut WriteStorage<'s, Handle<Prefab<BulletPrefab>>>,
         bullet_prefab_set: &Read<'s, BulletPrefabSet>,
     ) {

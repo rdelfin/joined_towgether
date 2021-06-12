@@ -1,4 +1,4 @@
-use crate::components::{Bullet, Velocity};
+use crate::components::Bullet;
 use amethyst::{
     assets::{Handle, Prefab, PrefabData, PrefabLoader, ProgressCounter, RonFormat},
     derive::PrefabData,

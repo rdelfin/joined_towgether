@@ -1,13 +1,11 @@
-use crate::{animation::AnimationId, components::Tower};
+use crate::components::Tower;
 use amethyst::{
-    animation::AnimationSetPrefab,
     assets::{PrefabData, PrefabLoader, ProgressCounter, RonFormat},
     derive::PrefabData,
     ecs::prelude::Entity,
     error::Error,
     prelude::{Builder, World, WorldExt},
     renderer::sprite::prefab::SpriteScenePrefab,
-    renderer::sprite::SpriteRender,
 };
 use serde::Deserialize;
 

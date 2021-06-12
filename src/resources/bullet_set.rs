@@ -1,11 +1,11 @@
 use crate::{
-    components::{Bullet, Velocity},
+    components::Velocity,
     prefabs::{load_bullet, BulletPrefab},
 };
 use amethyst::{
     assets::{Handle, Prefab, ProgressCounter},
     core::Transform,
-    ecs::{Entities, ReadStorage, WriteStorage},
+    ecs::{Entities, WriteStorage},
     prelude::World,
 };
 use nalgebra::{Translation3, Unit, UnitQuaternion, Vector2, Vector3};
