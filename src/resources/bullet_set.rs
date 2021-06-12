@@ -1,6 +1,7 @@
 use crate::prefabs::{load_bullet, BulletPrefab};
 use amethyst::{
     assets::{Handle, Prefab, ProgressCounter},
+    ecs::{Entities, WriteStorage},
     prelude::World,
 };
 use std::collections::HashMap;
@@ -48,5 +49,19 @@ impl BulletPrefabSet {
                 anyhow::anyhow!("Prefab for object type {:?} was not loaded.", bullet_type)
             })?
             .clone())
+    }
+
+    pub fn add_bullet<'s>(
+        &self,
+        bullet_type: BulletType,
+        entities: Entities<'s>,
+        mut bullet_prefabs: WriteStorage<'s, Handle<Prefab<BulletPrefab>>>,
+    ) -> anyhow::Result<()> {
+        let throwable_prefab = self.get_handle(bullet_type)?;
+        entities
+            .build_entity()
+            .with(throwable_prefab, &mut bullet_prefabs)
+            .build();
+        Ok(())
     }
 }

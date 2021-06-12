@@ -14,7 +14,6 @@ use serde::Deserialize;
 #[derive(Debug, Clone, Deserialize, PrefabData)]
 pub struct BulletPrefab {
     sprite_scene: SpriteScenePrefab,
-    animation_set: AnimationSetPrefab<AnimationId, SpriteRender>,
 }
 
 pub fn load_bullet(
