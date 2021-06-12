@@ -53,6 +53,6 @@ fn initialise_camera(world: &mut World) {
     world
         .create_entity()
         .with(camera_transform)
-        .with(Camera::standard_2d(width, height))
+        .with(Camera::standard_2d(width / 4., height / 4.))
         .build();
 }
