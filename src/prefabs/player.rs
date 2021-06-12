@@ -1,4 +1,4 @@
-use crate::components::ControlledCharacter;
+use crate::components::{ControlledCharacter, Velocity};
 use amethyst::{
     assets::{Handle, Prefab, PrefabData, PrefabLoader, ProgressCounter, RonFormat},
     derive::PrefabData,
@@ -12,6 +12,7 @@ use serde::Deserialize;
 #[derive(Debug, Clone, Deserialize, PrefabData)]
 pub struct PlayerPrefab {
     sprite_scene: SpriteScenePrefab,
+    velocity: Velocity,
     controlled_character: ControlledCharacter,
 }
 

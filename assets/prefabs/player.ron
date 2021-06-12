@@ -48,8 +48,9 @@ Prefab(
                         translation: (0.0, 0.0, 0.5),
                     ),
                 ),
+                velocity: ( v: [0.0, 0.0] ),
                 controlled_character: (
-                    speed: 10,
+                    speed: 100,
                     locked: false,
                 )
             ),
