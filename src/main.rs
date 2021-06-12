@@ -70,6 +70,11 @@ fn main() -> amethyst::Result<()> {
             systems::TowerDirectionSystem,
             "tower_direction_system",
             &["shooter_control_system"],
+        )
+        .with(
+            systems::PhysicsSystem,
+            "physics_system",
+            &["shooter_control_system"],
         );
 
     let mut game = Application::new(assets_dir, state::Game::default(), game_data)?;

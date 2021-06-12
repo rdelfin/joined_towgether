@@ -23,3 +23,11 @@ pub struct Tower {
     pub dir: Vector2<f32>,
     pub sprite_dir: TowerDirection,
 }
+
+#[derive(Clone, Component, Debug, Deserialize, Serialize, PrefabData)]
+#[prefab(Component)]
+#[storage(DenseVecStorage)]
+#[serde(deny_unknown_fields)]
+pub struct Bullet {
+    pub speed: f32,
+}

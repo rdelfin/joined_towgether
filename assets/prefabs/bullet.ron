@@ -48,6 +48,10 @@ Prefab(
                         translation: (0.0, 0.0, 0.2),
                     ),
                 ),
+                // Velocity
+                velocity: (
+                    v: [1.0, 0.0],
+                ),
             ),
         ),
     ],

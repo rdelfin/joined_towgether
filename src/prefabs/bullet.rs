@@ -1,3 +1,4 @@
+use crate::components::Velocity;
 use amethyst::{
     assets::{Handle, Prefab, PrefabData, PrefabLoader, ProgressCounter, RonFormat},
     derive::PrefabData,
@@ -11,6 +12,7 @@ use serde::Deserialize;
 #[derive(Debug, Clone, Deserialize, PrefabData)]
 pub struct BulletPrefab {
     sprite_scene: SpriteScenePrefab,
+    velocity: Velocity,
 }
 
 pub fn load_bullet(

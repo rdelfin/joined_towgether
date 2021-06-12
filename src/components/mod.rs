@@ -1,3 +1,7 @@
+mod physics;
 mod tower;
 
-pub use self::tower::{Tower, TowerDirection};
+pub use self::{
+    physics::Velocity,
+    tower::{Bullet, Tower, TowerDirection},
+};
