@@ -1,4 +1,4 @@
-use crate::prefabs;
+use crate::{prefabs, resources::FollowedObject};
 use amethyst::{
     assets::{Handle, Prefab},
     input::{is_close_requested, is_key_down, VirtualKeyCode},
@@ -17,7 +17,7 @@ impl SimpleState for Game {
         let StateData { world, .. } = data;
 
         // Add prefabs based on what was loaded in the loading state
-        world
+        let player_entity = world
             .create_entity()
             .with(self.player_prefab.clone())
             .build();
@@ -25,6 +25,11 @@ impl SimpleState for Game {
             .create_entity()
             .with(self.background_prefab.clone())
             .build();
+
+        world.insert(FollowedObject {
+            e: player_entity,
+            hard_lock: false,
+        })
     }
 
     fn handle_event(
