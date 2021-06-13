@@ -24,7 +24,7 @@ Container(
                 mouse_reactive: true,
             ),
             button: (
-                text: "TOWER",
+                text: "",
                 font: File("fonts/mono_bold.tff", ("TTF", ())),
                 font_size: 25.,
                 normal_text_color: (1.0, 0.65, 0., 1.0), // ffa500

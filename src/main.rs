@@ -58,6 +58,11 @@ fn main() -> amethyst::Result<()> {
             "player_loader",
             &[],
         )
+        .with_system_desc(
+            systems::UiEventHandlerSystemDesc::default(),
+            "ui_event_handler",
+            &[],
+        )
         .with_bundle(
             AnimationBundle::<animation::AnimationId, SpriteRender>::new(
                 "sprite_animation_control",

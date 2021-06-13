@@ -1,11 +1,14 @@
-use crate::{audio, prefabs, resources::FollowedObject};
+use crate::{
+    audio, prefabs,
+    resources::{FollowedObject, TowerPlacement},
+};
 use amethyst::{
     assets::{AssetStorage, Handle, Prefab},
     audio::{output::Output, Source},
     ecs::{Entity, Read, ReadExpect},
     input::{is_close_requested, is_key_down, VirtualKeyCode},
     prelude::{Builder, WorldExt},
-    ui::{UiCreator, UiEvent, UiEventType, UiFinder},
+    ui::UiCreator,
     GameData, SimpleState, SimpleTrans, StateData, StateEvent, Trans,
 };
 
@@ -38,6 +41,7 @@ impl SimpleState for Game {
             e: player_entity,
             hard_lock: false,
         });
+        world.insert(TowerPlacement { placing: false });
 
         // Start the music
         world.exec(
