@@ -2,9 +2,10 @@ use crate::{audio, prefabs, resources::FollowedObject};
 use amethyst::{
     assets::{AssetStorage, Handle, Prefab},
     audio::{output::Output, Source},
-    ecs::{Read, ReadExpect},
+    ecs::{Entity, Read, ReadExpect},
     input::{is_close_requested, is_key_down, VirtualKeyCode},
     prelude::{Builder, WorldExt},
+    ui::{UiCreator, UiEvent, UiEventType, UiFinder},
     GameData, SimpleState, SimpleTrans, StateData, StateEvent, Trans,
 };
 
@@ -12,11 +13,16 @@ pub struct Game {
     pub tower_prefab: Handle<Prefab<prefabs::TowerPrefab>>,
     pub background_prefab: Handle<Prefab<prefabs::BackgroundPrefab>>,
     pub player_prefab: Handle<Prefab<prefabs::PlayerPrefab>>,
+    pub ui_root: Option<Entity>,
 }
 
 impl SimpleState for Game {
     fn on_start(&mut self, data: StateData<'_, GameData<'_, '_>>) {
         let StateData { world, .. } = data;
+
+        // Setup UI
+        self.ui_root =
+            Some(world.exec(|mut creator: UiCreator<'_>| creator.create("ui/hud.ron", ())));
 
         // Add prefabs based on what was loaded in the loading state
         let player_entity = world

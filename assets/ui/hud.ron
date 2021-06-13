@@ -1,0 +1,76 @@
+#![enable(implicit_some)]
+// Detailed field information can be found at https://docs.amethyst.rs/master/amethyst_ui/enum.UiWidget.html and related pages
+Container(
+    transform: (
+        id: "background",
+        anchor: BottomMiddle,
+        // stretch: XY( x_margin: 0., y_margin: 0., keep_aspect_ratio: false),
+        width: 1024.,
+        height: 80.,
+        x: 0.0,
+        y: 50.0,
+    ),
+    background: SolidColor(0.6, 0.6, 1.0, 0.8),
+    children: [
+        Button(
+            transform: (
+                id: "button",
+                x: 0.0,
+                y: 40.0,
+                width: 64.0,
+                height: 64.0,
+                tab_order: 1,
+                anchor: BottomMiddle,
+                mouse_reactive: true,
+            ),
+            button: (
+                text: "TOWER",
+                font: File("fonts/mono_bold.tff", ("TTF", ())),
+                font_size: 25.,
+                normal_text_color: (1.0, 0.65, 0., 1.0), // ffa500
+                normal_image: Texture(
+                    File("sprites/button_released.png", (
+                        "IMAGE", (
+                            sampler_info: (
+                                min_filter: Nearest,
+                                mag_filter: Nearest,
+                                mip_filter: Nearest,
+                                wrap_mode: (Tile, Tile, Tile),
+                                lod_bias: (0),
+                                lod_range: (
+                                    start: ( 0 ),
+                                    end: ( 8000 ),
+                                ),
+                                comparison: None,
+                                border: (0),
+                                normalized: true,
+                                anisotropic: Off,
+                            ),
+                        )
+                    ))
+                ),
+                press_image: Texture(
+                    File("sprites/button_pressed.png", (
+                        "IMAGE", (
+                            sampler_info: (
+                                min_filter: Nearest,
+                                mag_filter: Nearest,
+                                mip_filter: Nearest,
+                                wrap_mode: (Tile, Tile, Tile),
+                                lod_bias: (0),
+                                lod_range: (
+                                    start: ( 0 ),
+                                    end: ( 8000 ),
+                                ),
+                                comparison: None,
+                                border: (0),
+                                normalized: true,
+                                anisotropic: Off,
+                            ),
+                        )
+                    ))
+                ),
+            )
+        ),
+    ],
+)

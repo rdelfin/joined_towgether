@@ -10,6 +10,7 @@ use amethyst::{
         types::DefaultBackend,
         RenderingBundle,
     },
+    ui::{RenderUi, UiBundle},
     utils::application_root_dir,
     Application, GameDataBuilder,
 };
@@ -70,13 +71,15 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(
             InputBundle::<input::GameBindingTypes>::new().with_bindings_from_file(bindings_path)?,
         )?
+        .with_bundle(UiBundle::<input::GameBindingTypes>::new())?
         .with_bundle(
             RenderingBundle::<DefaultBackend>::new()
                 .with_plugin(
                     RenderToWindow::from_config_path(display_config_path)?
                         .with_clear([0., 0., 0., 1.]),
                 )
-                .with_plugin(RenderFlat2D::default()),
+                .with_plugin(RenderFlat2D::default())
+                .with_plugin(RenderUi::default()),
         )?
         .with_bundle(AudioBundle::default())?
         .with(systems::PlayerControlSystem, "player_control_system", &[])

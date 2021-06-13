@@ -128,6 +128,7 @@ impl SimpleState for Loading {
                         tower_prefab: self.tower_prefab.as_ref().unwrap().clone(),
                         background_prefab: self.background_prefab.as_ref().unwrap().clone(),
                         player_prefab: self.player_prefab.as_ref().unwrap().clone(),
+                        ui_root: None,
                     }));
                 }
             }
