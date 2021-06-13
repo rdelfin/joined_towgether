@@ -18,3 +18,11 @@ pub struct Guided {
     pub waypoints: Vec<Point2<f32>>,
     pub curr_waypoint: usize,
 }
+
+#[derive(Clone, Component, Debug, Deserialize, Serialize, PrefabData)]
+#[prefab(Component)]
+#[storage(DenseVecStorage)]
+#[serde(deny_unknown_fields)]
+pub struct Hitable {
+    pub health: f32,
+}

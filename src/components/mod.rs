@@ -5,7 +5,7 @@ mod splash;
 mod tower;
 
 pub use self::{
-    enemy::Guided,
+    enemy::{Guided, Hitable},
     physics::Velocity,
     player::ControlledCharacter,
     splash::Splash,

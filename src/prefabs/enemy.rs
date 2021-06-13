@@ -1,4 +1,4 @@
-use crate::components::{Guided, Velocity};
+use crate::components::{Guided, Hitable, Velocity};
 use amethyst::{
     assets::{Handle, Prefab, PrefabData, PrefabLoader, ProgressCounter, RonFormat},
     derive::PrefabData,
@@ -14,6 +14,7 @@ pub struct EnemyPrefab {
     sprite_scene: SpriteScenePrefab,
     velocity: Velocity,
     guided: Guided,
+    hitable: Hitable,
 }
 
 pub fn load_enemy(

@@ -59,7 +59,10 @@ Prefab(
                         [350.0,  -270.0],
                     ],
                     curr_waypoint: 0,
-                )
+                ),
+                hitable: (
+                    health: 100.0,
+                ),
             ),
         ),
     ],

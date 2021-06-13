@@ -31,4 +31,5 @@ pub struct Tower {
 #[serde(deny_unknown_fields)]
 pub struct Bullet {
     pub speed: f32,
+    pub hitpoints: f32,
 }
