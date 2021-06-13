@@ -47,6 +47,7 @@ Prefab(
                 ),
                 // Bullet
                 bullet: (
+                    last_position: None,
                     speed: 1000.0,
                     hitpoints: 25.0,
                 ),
