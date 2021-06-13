@@ -44,10 +44,7 @@ Prefab(
                         sheet: "tower",
                         sprite_number: 0,
                     ),
-                    // Transform
-                    transform: (
-                        translation: (0.0, 0.0, 0.1),
-                    ),
+                    // Transform is specified during generation, so it is omited here
                 ),
                 // Tower
                 tower: (

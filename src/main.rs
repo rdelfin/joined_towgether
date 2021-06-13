@@ -109,6 +109,11 @@ fn main() -> amethyst::Result<()> {
             &["shooter_control_system", "player_control_system"],
         )
         .with(
+            systems::PlacementSystem::default(),
+            "placement_system",
+            &["ui_event_handler"],
+        )
+        .with(
             systems::CameraFollowSystem,
             "camera_follow_system",
             &["physics_system"],

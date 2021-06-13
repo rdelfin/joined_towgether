@@ -9,5 +9,5 @@ pub use self::{
     camera::CameraFollowSystem,
     controls::{PlayerControlSystem, ShooterControlSystem, TowerDirectionSystem},
     physics::PhysicsSystem,
-    ui::{UiEventHandlerSystem, UiEventHandlerSystemDesc},
+    ui::{PlacementSystem, UiEventHandlerSystem, UiEventHandlerSystemDesc},
 };

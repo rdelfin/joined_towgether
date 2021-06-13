@@ -13,7 +13,6 @@ use amethyst::{
 };
 
 pub struct Game {
-    pub tower_prefab: Handle<Prefab<prefabs::TowerPrefab>>,
     pub background_prefab: Handle<Prefab<prefabs::BackgroundPrefab>>,
     pub player_prefab: Handle<Prefab<prefabs::PlayerPrefab>>,
     pub ui_root: Option<Entity>,

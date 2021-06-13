@@ -1,12 +1,12 @@
 use crate::{
     components::{ControlledCharacter, Tower, TowerDirection, Velocity},
-    input::{ActionBinding, AxisBinding, GameBindingTypes},
+    input::{self, ActionBinding, AxisBinding, GameBindingTypes},
     prefabs::BulletPrefab,
     resources::{BulletPrefabSet, BulletType},
 };
 use amethyst::{
     assets::{Handle, Prefab},
-    core::{geometry::Plane, Transform},
+    core::Transform,
     derive::SystemDesc,
     ecs::{prelude::*, Entities, Read, System, WriteStorage},
     input::InputHandler,
@@ -82,7 +82,7 @@ impl ShooterControlSystem {
         active_camera: &Read<'s, ActiveCamera>,
         screen_dimensions: &ReadExpect<'s, ScreenDimensions>,
     ) {
-        let mouse = match self.get_mouse_projection(
+        let mouse = match input::get_mouse_projection(
             entities,
             input,
             transforms,
@@ -141,40 +141,6 @@ impl ShooterControlSystem {
         }
 
         self.fire_was_pressed = fire_is_pressed;
-    }
-
-    fn get_mouse_projection<'s>(
-        &self,
-        entities: &Entities<'s>,
-        input: &Read<'s, InputHandler<GameBindingTypes>>,
-        transforms: &WriteStorage<'s, Transform>,
-        cameras: &ReadStorage<'s, Camera>,
-        active_camera: &Read<'s, ActiveCamera>,
-        screen_dimensions: &ReadExpect<'s, ScreenDimensions>,
-    ) -> Option<Point2<f32>> {
-        let mouse = match input.mouse_position() {
-            Some((x, y)) => Point2::new(x, y),
-            None => Point2::new(0.0, 0.0),
-        };
-        let mut camera_join = (cameras, transforms).join();
-
-        match active_camera
-            .entity
-            .and_then(|a| camera_join.get(a, &entities))
-            .or_else(|| camera_join.next())
-        {
-            Some((camera, camera_transform)) => {
-                let ray = camera.screen_ray(
-                    mouse,
-                    Vector2::new(screen_dimensions.width(), screen_dimensions.height()),
-                    camera_transform,
-                );
-                let distance = ray.intersect_plane(&Plane::with_z(0.0)).unwrap();
-                let point_intersection = ray.at_distance(distance);
-                Some(Point2::new(point_intersection.x, point_intersection.y))
-            }
-            None => None,
-        }
     }
 
     fn get_tower_direction(&self, dir: Vector2<f32>) -> TowerDirection {

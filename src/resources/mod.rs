@@ -5,5 +5,5 @@ mod placement;
 pub use self::{
     bullet_set::{BulletPrefabSet, BulletType},
     camera::FollowedObject,
-    placement::TowerPlacement,
+    placement::{TowerPlacement, TowerPrefabSet, TowerType},
 };

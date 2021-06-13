@@ -21,7 +21,6 @@ pub struct Loading {
     loading_progress_counter: Option<ProgressCounter>,
     main_progress_counter: Option<ProgressCounter>,
     items_done_last: Option<usize>,
-    tower_prefab: Option<Handle<Prefab<prefabs::TowerPrefab>>>,
     background_prefab: Option<Handle<Prefab<prefabs::BackgroundPrefab>>>,
     player_prefab: Option<Handle<Prefab<prefabs::PlayerPrefab>>>,
     counter_end: Option<Instant>,
@@ -77,10 +76,11 @@ impl SimpleState for Loading {
                     self.main_progress_counter.as_mut().unwrap(),
                 );
                 world.insert(bullet_prefab_set);
-                self.tower_prefab = Some(prefabs::load_tower(
+                let tower_prefab_set = resources::TowerPrefabSet::new(
                     world,
                     self.main_progress_counter.as_mut().unwrap(),
-                ));
+                );
+                world.insert(tower_prefab_set);
                 self.background_prefab = Some(prefabs::load_background(
                     world,
                     self.main_progress_counter.as_mut().unwrap(),
@@ -125,7 +125,6 @@ impl SimpleState for Loading {
                             .expect("Failed to delete splash screen");
                     }
                     return Trans::Replace(Box::new(Game {
-                        tower_prefab: self.tower_prefab.as_ref().unwrap().clone(),
                         background_prefab: self.background_prefab.as_ref().unwrap().clone(),
                         player_prefab: self.player_prefab.as_ref().unwrap().clone(),
                         ui_root: None,

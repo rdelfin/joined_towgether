@@ -17,9 +17,10 @@ pub struct TowerPrefab {
 
 pub fn load_tower(
     world: &mut World,
+    path: &str,
     progress_counter: &mut ProgressCounter,
 ) -> Handle<Prefab<TowerPrefab>> {
     world.exec(|loader: PrefabLoader<'_, TowerPrefab>| {
-        loader.load("prefabs/tower.ron", RonFormat, progress_counter)
+        loader.load(path, RonFormat, progress_counter)
     })
 }
