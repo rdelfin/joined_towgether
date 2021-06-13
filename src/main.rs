@@ -87,7 +87,11 @@ fn main() -> amethyst::Result<()> {
                 .with_plugin(RenderUi::default()),
         )?
         .with_bundle(AudioBundle::default())?
-        .with(systems::PlayerControlSystem, "player_control_system", &[])
+        .with(
+            systems::PlayerControlSystem::default(),
+            "player_control_system",
+            &[],
+        )
         .with(
             systems::ShooterControlSystem::default(),
             "shooter_control_system",

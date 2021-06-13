@@ -45,7 +45,7 @@ Prefab(
                     ),
                     // Transform
                     transform: (
-                        translation: (0.0, 0.0, 0.5),
+                        translation: (0.0, 0.0, 0.6),
                     ),
                 ),
                 velocity: ( v: [0.0, 0.0] ),
