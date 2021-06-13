@@ -59,6 +59,11 @@ fn main() -> amethyst::Result<()> {
             &[],
         )
         .with_system_desc(
+            PrefabLoaderSystemDesc::<prefabs::EnemyPrefab>::default(),
+            "enemy_loader",
+            &[],
+        )
+        .with_system_desc(
             systems::UiEventHandlerSystemDesc::default(),
             "ui_event_handler",
             &[],

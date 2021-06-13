@@ -76,11 +76,19 @@ impl SimpleState for Loading {
                     self.main_progress_counter.as_mut().unwrap(),
                 );
                 world.insert(bullet_prefab_set);
+
                 let tower_prefab_set = resources::TowerPrefabSet::new(
                     world,
                     self.main_progress_counter.as_mut().unwrap(),
                 );
                 world.insert(tower_prefab_set);
+
+                let enemy_prefab_set = resources::EnemyPrefabSet::new(
+                    world,
+                    self.main_progress_counter.as_mut().unwrap(),
+                );
+                world.insert(enemy_prefab_set);
+
                 self.background_prefab = Some(prefabs::load_background(
                     world,
                     self.main_progress_counter.as_mut().unwrap(),

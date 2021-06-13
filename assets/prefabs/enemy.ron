@@ -1,0 +1,67 @@
+#![enable(implicit_some)]
+Prefab(
+    entities: [
+        PrefabEntity(
+            data: EnemyPrefab(
+                // SpriteScenePrefab
+                sprite_scene: (
+                    // SpriteSheetPrefab with index 0
+                    sheet: Sheet(
+                        // TexturePrefab
+                        texture: File("sprites/enemy1.png", (
+                            "IMAGE", (
+                                sampler_info: (
+                                    min_filter: Nearest,
+                                    mag_filter: Nearest,
+                                    mip_filter: Nearest,
+                                    wrap_mode: (Tile, Tile, Tile),
+                                    lod_bias: (0),
+                                    lod_range: (
+                                        start: ( 0 ),
+                                        end: ( 8000 ),
+                                    ),
+                                    comparison: None,
+                                    border: (0),
+                                    normalized: true,
+                                    anisotropic: Off,
+                                ),
+                            ),
+                        )),
+                        sprites: [
+                            Grid((
+                                texture_width: 32,
+                                texture_height: 32,
+                                columns: 1,
+                                rows: 1,
+                                cell_size: (32, 32),
+                            )),
+                        ],
+                        name: "enemy",
+                    ),
+                    // SpriteRenderPrefab
+                    render: (
+                        sheet: "enemy",
+                        sprite_number: 0,
+                    ),
+                    // Transform
+                    transform: (
+                        translation: (-330.0, 270.0, 0.5),
+                    ),
+                ),
+                velocity: ( v: [0.0, 0.0] ),
+                guided: (
+                    speed: 100,
+                    waypoints: [
+                        [-320.0, -70.0],
+                        [0.0,    -70.0],
+                        [0.0,     80.0],
+                        [340.0,   80.0],
+                        [350.0,  -270.0],
+                    ],
+                    curr_waypoint: 0,
+                )
+            ),
+        ),
+    ],
+)
+
