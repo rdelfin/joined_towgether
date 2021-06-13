@@ -1,6 +1,7 @@
 use amethyst::{
     animation::AnimationBundle,
     assets::PrefabLoaderSystemDesc,
+    audio::AudioBundle,
     core::transform::TransformBundle,
     input::InputBundle,
     renderer::{
@@ -14,6 +15,7 @@ use amethyst::{
 };
 
 mod animation;
+mod audio;
 mod components;
 mod input;
 mod prefabs;
@@ -76,6 +78,7 @@ fn main() -> amethyst::Result<()> {
                 )
                 .with_plugin(RenderFlat2D::default()),
         )?
+        .with_bundle(AudioBundle::default())?
         .with(systems::PlayerControlSystem, "player_control_system", &[])
         .with(
             systems::ShooterControlSystem::default(),

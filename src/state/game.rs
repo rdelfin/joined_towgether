@@ -1,6 +1,8 @@
-use crate::{prefabs, resources::FollowedObject};
+use crate::{audio, prefabs, resources::FollowedObject};
 use amethyst::{
-    assets::{Handle, Prefab},
+    assets::{AssetStorage, Handle, Prefab},
+    audio::{output::Output, Source},
+    ecs::{Read, ReadExpect},
     input::{is_close_requested, is_key_down, VirtualKeyCode},
     prelude::{Builder, WorldExt},
     GameData, SimpleState, SimpleTrans, StateData, StateEvent, Trans,
@@ -29,7 +31,16 @@ impl SimpleState for Game {
         world.insert(FollowedObject {
             e: player_entity,
             hard_lock: false,
-        })
+        });
+
+        // Start the music
+        world.exec(
+            |(sounds, storage, audio_output): (
+                ReadExpect<'_, audio::Sounds>,
+                Read<'_, AssetStorage<Source>>,
+                Option<Read<'_, Output>>,
+            )| { audio::play_music(&*sounds, &storage, audio_output.as_deref()) },
+        );
     }
 
     fn handle_event(

@@ -1,11 +1,12 @@
-use crate::{animation::AnimationId, components::Splash, prefabs, resources, state::Game};
+use crate::{animation::AnimationId, audio, components::Splash, prefabs, resources, state::Game};
 use amethyst::{
     animation::{
         get_animation_set, AnimationCommand, AnimationControlSet, AnimationSet, EndControl,
     },
-    assets::{Handle, Prefab, ProgressCounter},
+    assets::{AssetStorage, Handle, Prefab, ProgressCounter},
+    audio::{output::Output, Source},
     core::transform::Transform,
-    ecs::{Entities, Entity, Join, ReadStorage, WriteStorage},
+    ecs::{Entities, Entity, Join, Read, ReadExpect, ReadStorage, WriteStorage},
     input::{is_close_requested, is_key_down, VirtualKeyCode},
     prelude::{Builder, World, WorldExt},
     renderer::{camera::Camera, sprite::SpriteRender},
@@ -35,6 +36,7 @@ impl SimpleState for Loading {
             world,
             self.loading_progress_counter.as_mut().unwrap(),
         ));
+        audio::initialise_audio(world, self.loading_progress_counter.as_mut().unwrap());
         // Creates a new camera (needed for splash screen)
         initialise_camera(world);
     }
@@ -63,6 +65,8 @@ impl SimpleState for Loading {
 
                 // Load and start splash screen animations
                 self.start_animation(world);
+                // Start the buzzing audio
+                self.start_buzz_audio(world);
 
                 self.loading_progress_counter = None;
                 self.main_progress_counter = Some(ProgressCounter::new());
@@ -160,8 +164,19 @@ impl Loading {
             },
         );
 
-        // Animation lasts ~1.54s, so let's round up to 2s
+        // Due to the audio, we want to run for 4s
         self.counter_end = Some(Instant::now() + Duration::from_secs_f32(4.0));
+    }
+
+    fn start_buzz_audio(&self, world: &mut World) {
+        // Start the music
+        world.exec(
+            |(sounds, storage, audio_output): (
+                ReadExpect<'_, audio::Sounds>,
+                Read<'_, AssetStorage<Source>>,
+                Option<Read<'_, Output>>,
+            )| { audio::play_buzz(&*sounds, &storage, audio_output.as_deref()) },
+        );
     }
 }
 
