@@ -95,10 +95,16 @@ impl ShooterControlSystem {
         };
 
         for (tower, transform) in (towers, transforms).join() {
-            let tower_position = Point2::new(transform.translation().x, transform.translation().y);
-            let dir = (mouse - tower_position).normalize();
-            tower.dir = dir;
-            tower.sprite_dir = self.get_tower_direction(dir);
+            if tower.active {
+                let tower_position =
+                    Point2::new(transform.translation().x, transform.translation().y);
+                let dir = (mouse - tower_position).normalize();
+                tower.dir = dir;
+                tower.sprite_dir = self.get_tower_direction(dir);
+            } else {
+                tower.dir = Vector2::new(-1.0, 0.0);
+                tower.sprite_dir = TowerDirection::W;
+            }
         }
     }
 
@@ -117,11 +123,13 @@ impl ShooterControlSystem {
         if !fire_is_pressed && self.fire_was_pressed {
             let mut tower_data: Vec<(Vector2<f32>, Vector2<f32>)> = vec![];
             for (transform, tower) in (&*transforms, towers).join() {
-                let translation = transform.translation().clone();
-                tower_data.push((
-                    tower.dir.clone(),
-                    Vector2::new(translation.x, translation.y),
-                ));
+                if tower.active {
+                    let translation = transform.translation().clone();
+                    tower_data.push((
+                        tower.dir.clone(),
+                        Vector2::new(translation.x, translation.y),
+                    ));
+                }
             }
 
             for (direction, position) in tower_data {

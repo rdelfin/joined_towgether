@@ -22,6 +22,7 @@ pub enum TowerDirection {
 pub struct Tower {
     pub dir: Vector2<f32>,
     pub sprite_dir: TowerDirection,
+    pub active: bool,
 }
 
 #[derive(Clone, Component, Debug, Deserialize, Serialize, PrefabData)]

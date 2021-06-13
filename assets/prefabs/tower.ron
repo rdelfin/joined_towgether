@@ -50,6 +50,7 @@ Prefab(
                 tower: (
                     dir: [-1.0, 0.0],
                     sprite_dir: E,
+                    active: false,
                 )
             ),
         ),
