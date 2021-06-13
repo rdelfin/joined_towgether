@@ -4,7 +4,7 @@ use amethyst::{
     ecs::{storage::DenseVecStorage, Component, Entity, WriteStorage},
     Error,
 };
-use nalgebra::Vector2;
+use nalgebra::Point2;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Component, Debug, Deserialize, Serialize, PrefabData)]
@@ -15,6 +15,6 @@ pub struct Guided {
     pub speed: f32,
     // Waypoints are all supposed to be destinations, so the initial position should
     // not be included
-    pub waypoints: Vec<Vector2<f32>>,
+    pub waypoints: Vec<Point2<f32>>,
     pub curr_waypoint: usize,
 }

@@ -1,6 +1,6 @@
 use crate::{
     audio, prefabs,
-    resources::{FollowedObject, TowerPlacement},
+    resources::{EnemySpawning, FollowedObject, TowerPlacement},
 };
 use amethyst::{
     assets::{AssetStorage, Handle, Prefab},
@@ -41,6 +41,7 @@ impl SimpleState for Game {
             hard_lock: false,
         });
         world.insert(TowerPlacement { placing: false });
+        world.insert(EnemySpawning);
 
         // Start the music
         world.exec(

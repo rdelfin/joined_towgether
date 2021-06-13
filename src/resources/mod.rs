@@ -6,6 +6,6 @@ mod placement;
 pub use self::{
     bullet_set::{BulletPrefabSet, BulletType},
     camera::FollowedObject,
-    enemy_set::{EnemyPrefabSet, EnemyType},
+    enemy_set::{EnemyPrefabSet, EnemySpawning, EnemyType},
     placement::{TowerPlacement, TowerPrefabSet, TowerType},
 };

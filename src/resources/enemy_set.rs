@@ -6,6 +6,9 @@ use amethyst::{
 };
 use std::collections::HashMap;
 
+#[derive(Default)]
+pub struct EnemySpawning;
+
 #[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
 pub enum EnemyType {
     Standard,

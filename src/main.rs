@@ -112,15 +112,25 @@ fn main() -> amethyst::Result<()> {
             "bullet_speed_system",
             &["shooter_control_system"],
         )
+        .with(systems::EnemyMovementSystem, "enemy_movement_system", &[])
         .with(
             systems::PhysicsSystem,
             "physics_system",
-            &["shooter_control_system", "player_control_system"],
+            &[
+                "shooter_control_system",
+                "player_control_system",
+                "enemy_movement_system",
+            ],
         )
         .with(
             systems::PlacementSystem::default(),
             "placement_system",
             &["ui_event_handler"],
+        )
+        .with(
+            systems::EnemySpawnSystem::default(),
+            "enemy_spawn_system",
+            &[],
         )
         .with(
             systems::CameraFollowSystem,
