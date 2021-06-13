@@ -4,7 +4,7 @@ use amethyst::{
     ecs::{storage::DenseVecStorage, Component, Entity, WriteStorage},
     Error,
 };
-use nalgebra::Vector2;
+use nalgebra::{Point2, Vector2};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq, Eq)]
@@ -30,6 +30,7 @@ pub struct Tower {
 #[storage(DenseVecStorage)]
 #[serde(deny_unknown_fields)]
 pub struct Bullet {
+    pub last_position: Option<Point2<f32>>,
     pub speed: f32,
     pub hitpoints: f32,
 }

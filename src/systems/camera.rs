@@ -1,4 +1,4 @@
-use crate::resources::FollowedObject;
+use crate::{resources::FollowedObject, util};
 use amethyst::{
     core::Transform,
     derive::SystemDesc,
@@ -98,40 +98,11 @@ impl CameraFollowSystem {
                 (followed_position.x - 120., true),
             ]
             .iter()
-            .filter_map(|(c, vert)| self.intersect(followed_position, dir, *c, *vert))
+            .filter_map(|(c, vert)| util::intersect(followed_position, dir, *c, *vert))
             .filter(|(t, _)| *t >= 0. && *t <= 1.)
             .min_by(|(a, _), (b, _)| a.partial_cmp(b).expect("Tried to compare a NaN"))
             .map(|(_, intersection)| intersection)
             .unwrap_or(camera_position)
-        }
-    }
-
-    // Return value is t, where f(t) = p +vt, as well as the point of intersection
-    // If None is returned, there is no intersection point (i.e. the lines are parallel).
-    fn intersect(
-        &self,
-        p: Point2<f32>,
-        v: Vector2<f32>,
-        // These two encode whether this is a y = c or x = c equation (if vert = true, then x is
-        // constant)
-        c: f32,
-        vert: bool,
-    ) -> Option<(f32, Point2<f32>)> {
-        // Then x is constant
-        if vert {
-            if v.x == 0.0 {
-                None
-            } else {
-                let t = (c - p.x) / v.x;
-                Some((t, p + v * t))
-            }
-        } else {
-            if v.y == 0.0 {
-                None
-            } else {
-                let t = (c - p.y) / v.y;
-                Some((t, p + v * t))
-            }
         }
     }
 }

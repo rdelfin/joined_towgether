@@ -23,6 +23,7 @@ mod prefabs;
 mod resources;
 mod state;
 mod systems;
+mod util;
 
 fn main() -> amethyst::Result<()> {
     amethyst::start_logger(Default::default());
