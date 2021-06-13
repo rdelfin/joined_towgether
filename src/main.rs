@@ -108,8 +108,8 @@ fn main() -> amethyst::Result<()> {
             &["shooter_control_system"],
         )
         .with(
-            systems::BulletSpeedSystem,
-            "bullet_speed_system",
+            systems::BulletSystem,
+            "bullet_system",
             &["shooter_control_system"],
         )
         .with(systems::EnemyMovementSystem, "enemy_movement_system", &[])
@@ -117,6 +117,7 @@ fn main() -> amethyst::Result<()> {
             systems::PhysicsSystem,
             "physics_system",
             &[
+                "bullet_system",
                 "shooter_control_system",
                 "player_control_system",
                 "enemy_movement_system",

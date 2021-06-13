@@ -6,7 +6,7 @@ mod physics;
 mod ui;
 
 pub use self::{
-    bullet::BulletSpeedSystem,
+    bullet::BulletSystem,
     camera::CameraFollowSystem,
     controls::{PlayerControlSystem, ShooterControlSystem, TowerDirectionSystem},
     enemies::{EnemyMovementSystem, EnemySpawnSystem},

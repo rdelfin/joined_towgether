@@ -7,9 +7,9 @@ use amethyst::{
 use nalgebra::Point2;
 
 #[derive(SystemDesc)]
-pub struct BulletSpeedSystem;
+pub struct BulletSystem;
 
-impl<'s> System<'s> for BulletSpeedSystem {
+impl<'s> System<'s> for BulletSystem {
     type SystemData = (
         Entities<'s>,
         ReadStorage<'s, Transform>,
